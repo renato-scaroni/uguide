@@ -16,9 +16,24 @@
 <script type="text/javascript">
     var map;
     var myLocations;
+    var possiblePlaces;
     var origem;
     var dest;
     
+    $(document).ready(function(){
+      possiblePlaces = [];
+      {% for p in places %}
+       possiblePlaces.push("{{p}}");
+      {% endfor %}
+      var origdropdown = "<select name=selectOrigem onchange='getOrigem(this);' required>";
+      for (var op in possiblePlaces)
+      {
+        origdropdown = origdropdown + "<option>"+possiblePlaces[op]+"</option>";
+      }
+      origdropdown = origdropdown +  "</select>";
+      console.log(origdropdown);
+      document.getElementById("selOrig").innerHTML = origdropdown;
+    });
       $("#btApend").click(
           function() {
             myLocations.push("A");
@@ -51,22 +66,41 @@
           form.submit();
         }
       );   
-    });
 
-    
+    var origSelected = false;
+    var destSelected = false;
+
+    function ShowOtherPlaces ()
+    {
+          document.getElementById("myDiv").innerHTML = "blabla";
+    }
+
+
+
     function getOrigem(dropdown) {
-        var myindex  = dropdown.selectedIndex
-        var SelValue = dropdown.options[myindex].value
+        var myindex  = dropdown.selectedIndex;
+        var SelValue = dropdown.options[myindex].value;
         //document.getElementById("demo").innerHTML = SelValue;
         origem = SelValue;
+        origSelected = true;
+        if(origSelected && destSelected)
+        {
+          ShowOtherPlaces();
+        }
         return true;
     }
 
     function getDest(dropdown) {
-        var myindex  = dropdown.selectedIndex
-        var SelValue = dropdown.options[myindex].value
+        var myindex  = dropdown.selectedIndex;
+        var SelValue = dropdown.options[myindex].value;
         //document.getElementById("demo").innerHTML = SelValue;
         dest = SelValue;
+        destSelected = true;
+        if(origSelected && destSelected)
+        {
+          ShowOtherPlaces();
+
+        }
         return true;
     }
   </script>
@@ -78,7 +112,7 @@
 
 <button type="button" id="btSubmit">Submit</button>
 
-<div>
+<div id="selOrig">
   <select name=selectOrigem onchange='getOrigem(this);' required>
     <option id="dropdown0" value="" selected="selected"></option>
     <option id="dropdown1">Value 1</option>
@@ -95,6 +129,10 @@
     <option id="dropdown6">Value 3</option>
   </select>
 </div> 
+
+<div id="WayPointSelection">
+
+</div>
 
 </body>
 
