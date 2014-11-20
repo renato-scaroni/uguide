@@ -18,6 +18,7 @@
     var myLocations;
     var origem;
     var dest;
+<<<<<<< HEAD
     $(document).ready(function(){
       myLocations = [];
       origem = "";
@@ -37,6 +38,8 @@
         overviewMapControl: false     
       
       });
+=======
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
     
       $("#btApend").click(
           function() {
@@ -47,6 +50,7 @@
       $('#btSubmit').click(
 
         function post() {
+<<<<<<< HEAD
           if (origem == "") {
             alert("Escolha uma origem");
             return;
@@ -57,6 +61,8 @@
             return;
           };
 
+=======
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
           method = "post";
           path = "/map";
 
@@ -67,7 +73,10 @@
           var hiddenField = document.createElement("input");
           hiddenField.setAttribute("type", "hidden");
           hiddenField.setAttribute("name", "locations");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
           var strLocations = origem + "\t" + dest + "\t";
           for (var key in myLocations) {
               strLocations = strLocations + myLocations[key] + "\t";
@@ -84,6 +93,7 @@
     });
 
     
+<<<<<<< HEAD
     var waypoints = [];
     function GenerateMarkers () {
       map.addMarker({
@@ -128,6 +138,8 @@
     }
 
 
+=======
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
     function getOrigem(dropdown) {
         var myindex  = dropdown.selectedIndex
         var SelValue = dropdown.options[myindex].value
@@ -148,6 +160,7 @@
 
 
 <body>
+<<<<<<< HEAD
   <h1>GMaps.js &mdash; Tests</h1>
 
   <div class="span11">
@@ -157,10 +170,13 @@
 
 <button type="button" onclick="DrawMap()">Desenhar rota IME-MASP passando pelo Eldorado</button>
 
+=======
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
 <button type="button" id="btApend">Apend na lista</button>
 
 <button type="button" id="btSubmit">Submit</button>
 
+<<<<<<< HEAD
   <div>
     <select name=selectOrigem onchange='getOrigem(this);' required>
       <option id="dropdown0" value="" selected="selected"></option>
@@ -178,6 +194,25 @@
       <option id="dropdown6">Value 3</option>
     </select>
   </div> 
+=======
+<div>
+  <select name=selectOrigem onchange='getOrigem(this);' required>
+    <option id="dropdown0" value="" selected="selected"></option>
+    <option id="dropdown1">Value 1</option>
+    <option id="dropdown2">Value 2</option>
+    <option id="dropdown3">Value 3</option>
+  </select>
+</div> 
+
+<div>
+  <select name=selectDest onchange='getDest(this);' required>
+    <option id="dropdown3.5" value="" selected="selected"></option>
+    <option id="dropdown4">Value 1</option>
+    <option id="dropdown5">Value 2</option>
+    <option id="dropdown6">Value 3</option>
+  </select>
+</div> 
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
 
 </body>
 

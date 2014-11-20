@@ -15,7 +15,10 @@
 # limitations under the License.
 #
 import webapp2
+<<<<<<< HEAD
 import cgi
+=======
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
 
 import os
 import urllib
@@ -39,10 +42,26 @@ class Place(ndb.Model):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
+<<<<<<< HEAD
         template_values = {
             'orig' : (-23.558745, -46.731859, 'IMEUSP') ,
             'waypts' : [(-23.572742, -46.696095, 'Shopping Eldorado'), (-23.564588, -46.739655, 'HU')],
             'dest' : (-23.561518, -46.656009, 'MASP')
+=======
+        query = Place.query()
+        q = query.fetch(10)
+        places = []
+        s = ""
+        for p in q:
+            places.append(p.name)
+            s += p.name + " , "
+            s += str(p.latitude) + " , "
+            s += str(p.longitude) + "<br>"
+
+        template_values = {
+            'places' : places,
+            'placesString' : s
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -50,15 +69,25 @@ class MainHandler(webapp2.RequestHandler):
 
 class RegisterStuff(webapp2.RequestHandler):
     def get(self):
+<<<<<<< HEAD
         lat = float(self.request.get("lat"))
         lon = float(self.request.get("lon"))
         name = str(self.request.get("name"))
+=======
+        lat = self.request.get("lat")
+        lon = self.request.get("lon")
+        name = self.request.get("name")
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
         place = Place()
         place.latitude = lat
         place.longitude = lon
         place.name = name
         place.put()
+<<<<<<< HEAD
         self.response.write("Regitered "+ name + " at longitude:"+str(lon)+" and latitude:"+str(lat))
+=======
+        self.response.write("Regitered "+ name + " at longitude:"+lon+" and latitude:"+lat)
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
 
 class ListStuff(webapp2.RequestHandler):
     def get(self):
@@ -70,12 +99,55 @@ class ListStuff(webapp2.RequestHandler):
             s += str(p.longitude) + "<br>"
         self.response.write(s)
 
+<<<<<<< HEAD
 class MapHandler(webapp2.RequestHandler):
     def post(self):
         resp = cgi.escape(self.request.get('locations'))
         self.response.write(resp)
 
 class RandomTest(webapp2.RequestHandler):
+=======
+
+
+class ErrorHandler(webapp2.RequestHandler):
+    def get(self):
+        template_values = {
+            'type' : str(self.request.get("type"))
+        }
+        template = JINJA_ENVIRONMENT.get_template('error.html')
+        self.response.write(template.render(template_values))
+
+class MapHandler(webapp2.RequestHandler):
+    def getPlaces(self, l):
+        places = []
+        q = Place.query()
+        for p in l:
+            if not (p == ''):
+                q2 = q.filter(Place.name == p)
+                places.append((q2.fetch()[0].latitude, q2.fetch()[0].longitude, p))
+        return places
+
+    def post(self):
+        req = str (self.request.get("locations"))
+        places = self.getPlaces(req.split('\t'))
+        waypts = []
+
+        if(len(places) < 2):
+            self.redirect("/error?type=400")
+        else:
+            for i in range(1, len(places)-1):
+                waypts.append(places[i])
+
+            template_values = {
+                'orig' : places[0],
+                'waypts' : waypts,
+                'dest' : places[-1]
+            }
+            template = JINJA_ENVIRONMENT.get_template('map.html')
+            self.response.write(template.render(template_values))
+
+class Populate(webapp2.RequestHandler):
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
     def get(self):
         lat = -23.558745
         lon = -46.731859
@@ -95,6 +167,7 @@ class RandomTest(webapp2.RequestHandler):
         place.put()
         lat = -23.572742
         lon = -46.696095
+<<<<<<< HEAD
         name = 'Shopping Eldorado'
         place = Place()
         place.latitude = lat
@@ -104,11 +177,15 @@ class RandomTest(webapp2.RequestHandler):
         lat = -23.564588
         lon = -46.739655
         name = 'HU'
+=======
+        name = 'ELDORADO'
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
         place = Place()
         place.latitude = lat
         place.longitude = lon
         place.name = name
         place.put()
+<<<<<<< HEAD
         self.response.write("Ok")
 
 app = webapp2.WSGIApplication([
@@ -117,4 +194,15 @@ app = webapp2.WSGIApplication([
     ('/list', ListStuff),
     ('/random', RandomTest),
     ('/map', MapHandler)
+=======
+        self.response.write("Populated")
+
+app = webapp2.WSGIApplication([
+    ('/', MainHandler),
+    ('/map', MapHandler),
+    ('/register', RegisterStuff),
+    ('/list', ListStuff),
+    ('/populate', Populate),
+    ('/error', ErrorHandler)
+>>>>>>> 6b1f2d254ddb53377c564ccc28cfc2b52b0b71b0
 ], debug=True)
