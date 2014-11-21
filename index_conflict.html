@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+<meta charset="utf-8">
+<title>GMaps.js &mdash; Tests</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="https://rawgit.com/HPNeo/gmaps/master/gmaps.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />-->
+<link rel="stylesheet" type="text/css" href="https://linux.ime.usp.br/~scaroni/gmaps/example.css" />
+
+
+<script type="text/javascript">
+    var map;
+    var myLocations;
+    var origem;
+    var dest;
+    $(document).ready(function(){
+      myLocations = [];
+      origem = "";
+      dest = "";
+      map = new GMaps({
+        el: '#map',
+        lat: {{orig[0]}},
+        lng: {{orig[1]}},
+        zoomControl : true,
+        zoomControlOpt: {
+          style : 'SMALL',
+          position: 'TOP_LEFT'
+        },
+        panControl : false,
+        streetViewControl : false,
+        mapTypeControl: false,
+        overviewMapControl: false     
+      
+      });
+    
+      $("#btApend").click(
+          function() {
+            myLocations.push("A");
+          }
+        );
+
+      $('#btSubmit').click(
+
+        function post() {
+          if (origem == "") {
+            alert("Escolha uma origem");
+            return;
+          };
+
+          if (dest == "") {
+            alert("Escolha um fim");
+            return;
+          };
+
+          method = "post";
+          path = "/map";
+
+          var form = document.createElement("form");
+          form.setAttribute("method", method);
+          form.setAttribute("action", path);
+
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", "locations");
+
+          var strLocations = origem + "\t" + dest + "\t";
+          for (var key in myLocations) {
+              strLocations = strLocations + myLocations[key] + "\t";
+          }
+
+          hiddenField.setAttribute("value", strLocations);
+
+          form.appendChild(hiddenField);
+
+          document.body.appendChild(form);
+          form.submit();
+        }
+      );   
+    });
+
+    
+    var waypoints = [];
+    function GenerateMarkers () {
+      map.addMarker({
+        lat: {{orig[0]}},
+        lng: {{orig[1]}},
+        title: '{{orig[2]}}'
+      });
+
+      
+      {% for way in waypts %}
+        waypoints.push({
+          location:  new google.maps.LatLng({{way[0]}}, {{way[1]}}),
+          stopover:true
+        });
+        map.addMarker({
+          lat: {{way[0]}},
+          lng: {{way[1]}},
+          title: '{{way[2]}}'
+        });
+      {% endfor %}
+
+      map.addMarker({
+        lat: {{dest[0]}},
+        lng: {{dest[1]}},
+        title: '{{dest[2]}}'
+      });
+
+    }
+
+    function DrawMap () {
+      GenerateMarkers();
+
+      map.drawRoute({
+        origin: [{{orig[0]}}, {{orig[1]}}],
+        destination: [{{dest[0]}}, {{dest[1]}}],
+        travelMode: 'driving',
+        waypoints: waypoints,
+        strokeColor: '#131540',
+        strokeOpacity: 0.6,
+        strokeWeight: 6
+      });
+    }
+
+
+    function getOrigem(dropdown) {
+        var myindex  = dropdown.selectedIndex
+        var SelValue = dropdown.options[myindex].value
+        origem = SelValue;
+        return true;
+    }
+
+    function getDest(dropdown) {
+        var myindex  = dropdown.selectedIndex
+        var SelValue = dropdown.options[myindex].value
+        dest = SelValue;
+        return true;
+    }
+  </script>
+</head>
+
+
+<body>
+  <h1>GMaps.js &mdash; Tests</h1>
+
+  <div class="span11">
+    <div id="map">
+    </div>
+  <div class="span11">
+
+<button type="button" onclick="DrawMap()">Desenhar rota IME-MASP passando pelo Eldorado</button>
+
+<button type="button" id="btApend">Apend na lista</button>
+
+<button type="button" id="btSubmit">Submit</button>
+
+  <div>
+    <select name=selectOrigem onchange='getOrigem(this);' required>
+      <option id="dropdown0" value="" selected="selected"></option>
+      <option id="dropdown1">Value 1</option>
+      <option id="dropdown2">Value 2</option>
+      <option id="dropdown3">Value 3</option>
+    </select>
+  </div> 
+
+  <div>
+    <select name=selectDest onchange='getDest(this);' required>
+      <option id="dropdown3.5" value="" selected="selected"></option>
+      <option id="dropdown4">Value 1</option>
+      <option id="dropdown5">Value 2</option>
+      <option id="dropdown6">Value 3</option>
+    </select>
+  </div> 
+
+</body>
+
+</html>
+{% endautoescape %}
