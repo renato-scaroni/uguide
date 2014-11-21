@@ -71,6 +71,7 @@
         dest = SelValue;
         return true;
     }
+
   </script>
 </head>
 
@@ -81,11 +82,24 @@
 <button type="button" id="btSubmit">Submit</button>
 </br>
 </br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+
+
+
 <form role="form">
 <div class="row">
    <div class="col-md-2"></div>
   <div class="col-md-4">
     Origem
+  </br>
     <div class="btn-group">
     <button type="button" class="btn btn-danger">Inicio</button>
     <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -102,6 +116,8 @@
    </div>
  </div>
   <div class="col-md-4">
+    Destino
+  </br>
     <div class="btn-group">
       <button type="button" class="btn btn-danger">Destino</button>
       <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -140,11 +156,11 @@
 <div class="row">
   <div class="col-md-2"></div>
   <div class="col-md-4">
-<input type="checkbox" name="causelist_month" id="causelist_month" value="select all/unselect all" onclick="checkedAll     ();">select all/unselect all
+<input type="checkbox" name="causelist_month" id="causelist_month" value="select all/unselect all" onclick="checkedAll     ();"> select all/unselect all
 </div>
 
 <div class="col-md-2">
- <input type="checkbox" name="viju" id="viju" value="Jan" onClick="">jan
+ <input type="checkbox" name="viju" id="viju" value="Jan" onClick=""> jan
 </div>
 
 </div>
@@ -153,11 +169,11 @@
 
 <div class="row">
     <div class="col-md-2"></div>
-  <div class="col-md-4">.
-  <input type="checkbox" name="viju" id ="viju" value="feb" onClick="">feb
+  <div class="col-md-4">
+  <input type="checkbox" name="viju" id ="viju" value="feb" onClick=""> feb
  </div>
 
- <div class="col-md-2">.
+ <div class="col-md-2">
  <input type="checkbox" name="viju" id ="viju" value="feb" onClick=""> mar
 </div>
 
@@ -165,20 +181,21 @@
 
 <div class="row"> 
     <div class="col-md-2"></div>
-  <div class="col-md-4">.
+  <div class="col-md-4">
  <input type="checkbox" name="viju" id ="viju" value="feb" onClick=""> mar
 </div>
 
- <div class="col-md-2">.
+ <div class="col-md-2">
  <input type="checkbox" name="viju" id ="viju" value="feb" onClick=""> mar
 </div>
 
-
+</br>
+</br>
+</br>
 </div>
 <div class="row"> 
     <div class="col-md-8"></div>
- <input type="Button" value="Show values" onClick="checkedAll(this.value)"/>  
-<form>
+<button type="submit" class="btn btn-primary">Submit</button>
 </div>
 
 </div>
