@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+<meta charset="utf-8">
+<title>Uguide &mdash; Uguide</title>
+<!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+     <link href="style.css" rel="stylesheet">
+   <!--   <link href="style.css" rel="stylesheet"> -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="https://rawgit.com/HPNeo/gmaps/master/gmaps.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />-->
+<link rel="stylesheet" type="text/css" href="https://linux.ime.usp.br/~scaroni/gmaps/example.css" />
+
+
+<script type="text/javascript">
+    var map;
+    var myLocations;
+    var origem;
+    var dest;
+    
+      $("#btApend").click(
+          function() {
+            myLocations.push("A");
+          }
+        );
+
+      $('#btSubmit').click(
+
+        function post() {
+          method = "post";
+          path = "/map";
+
+          var form = document.createElement("form");
+          form.setAttribute("method", method);
+          form.setAttribute("action", path);
+
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", "locations");
+          var strLocations = origem + "\t" + dest + "\t";
+          for (var key in myLocations) {
+              strLocations = strLocations + myLocations[key] + "\t";
+          }
+
+          hiddenField.setAttribute("value", strLocations);
+
+          form.appendChild(hiddenField);
+
+          document.body.appendChild(form);
+          form.submit();
+        }
+      );   
+    });
+
+
+  </script>
+</head>
+
+
+<body>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-6"><h1> Seje bem vindo ao Uguide</h1> </div>
+  </br>
+  <div class="col-md-4"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-6"><h4> Quem tem o app vai a Roma! :)</h4> </div>
+</div>
+</br>
+</br>
+</br>
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-6"><h4> Este app tem como o intuito de ajudar os viajantes a planejarem melhor a sua rota de viajem e apreciar a sua experiencia com a cidade. Selecionando a cidade a ser visitada e o pontos turisticos criamos uma rota na qual o viajante passe menos tempo possivel no deslocamento entre as atracoes. Sendo assim aproveitando mais o que a cidade tem a oferecer. </h4> </div>
+</div>
+</br>
+</div>
+<div class "row">
+  <div class="col-md-4"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-4"> 
+    </br>
+    <div class="btn-group">
+      <button type="button" class="btn btn-warning">Seleciona a Cidade</button>
+      <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Sao Paulo</a></li>
+        <li><a href="#">Rio</a></li>
+      </ul>
+    </div>
+   </div>
+ </div>
+</br>
+</br>
+</br>
+</br>
+<div class="row"> 
+     <div class="col-md-4"></div>
+     <div class="col-md-1"></div>
+    <div class="col-md-2"><button type="submit" class="btn btn-primary">Enviar</button></div>
+</div>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+</body>
+
+</html>
+{% endautoescape %}
