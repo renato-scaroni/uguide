@@ -15,67 +15,114 @@
 
 <script type="text/javascript">
     var map;
-    var myLocations;
+    var myLocations = [];
     var possiblePlaces;
     var origem;
     var dest;
     
+    function UpdateDropdownLists()
+    {
+      var origDropdown = "<select name=selectOrigem onchange='getOrigem(this);' required>";
+      var destDropdown = "<select name=selectDest onchange='getDest(this);' required>";
+      for (var op in possiblePlaces)
+      {
+        if (possiblePlaces[op] != dest)
+        {
+          if(possiblePlaces[op] == origem)
+          {
+            origDropdown = origDropdown + "<option selected='selected'>"+possiblePlaces[op]+"</option>";
+          }
+          else
+          {
+            origDropdown = origDropdown + "<option>"+possiblePlaces[op]+"</option>";
+          }          
+        }
+        if (possiblePlaces[op] != origem)
+        {
+          if(possiblePlaces[op] == dest)
+          {
+            destDropdown = destDropdown + "<option selected='selected'>"+possiblePlaces[op]+"</option>";
+          }
+          else
+          {
+            destDropdown = destDropdown + "<option>"+possiblePlaces[op]+"</option>";
+          }
+        }
+      }
+      origDropdown = origDropdown +  "</select>";
+      destDropdown = destDropdown +  "</select>";
+      // console.log(dropdown);
+      document.getElementById("selOrig").innerHTML = origDropdown;
+      document.getElementById("selDest").innerHTML = destDropdown;
+    }
+
     $(document).ready(function(){
-      possiblePlaces = [];
+      possiblePlaces = [''];
       {% for p in places %}
        possiblePlaces.push("{{p}}");
       {% endfor %}
-      var origdropdown = "<select name=selectOrigem onchange='getOrigem(this);' required>";
-      for (var op in possiblePlaces)
-      {
-        origdropdown = origdropdown + "<option>"+possiblePlaces[op]+"</option>";
-      }
-      origdropdown = origdropdown +  "</select>";
-      console.log(origdropdown);
-      document.getElementById("selOrig").innerHTML = origdropdown;
+      UpdateDropdownLists();      
     });
-      $("#btApend").click(
-          function() {
-            myLocations.push("A");
-          }
-        );
 
-      $('#btSubmit').click(
+    function post() 
+    {
+      if(!origSelected && !destSelected)
+        return;
+      var method = "post";
+      var path = "/map";
 
-        function post() {
-          method = "post";
-          path = "/map";
+      var form = document.createElement("form");
+      form.setAttribute("method", method);
+      form.setAttribute("action", path);
 
-          var form = document.createElement("form");
-          form.setAttribute("method", method);
-          form.setAttribute("action", path);
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "locations");
+      var strLocations = origem + "\t";
+      for (var key in myLocations) {
+          strLocations = strLocations + myLocations[key] + "\t";
+      }
+      strLocations  += dest + "\t"
+      hiddenField.setAttribute("value", strLocations);
+      form.appendChild(hiddenField);
 
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", "locations");
-          var strLocations = origem + "\t" + dest + "\t";
-          for (var key in myLocations) {
-              strLocations = strLocations + myLocations[key] + "\t";
-          }
-
-          hiddenField.setAttribute("value", strLocations);
-
-          form.appendChild(hiddenField);
-
-          document.body.appendChild(form);
-          form.submit();
-        }
-      );   
+      document.body.appendChild(form);
+      form.submit();
+    }
 
     var origSelected = false;
     var destSelected = false;
 
-    function ShowOtherPlaces ()
+    function UpdateWayPointsList (cb)
     {
-          document.getElementById("myDiv").innerHTML = "blabla";
+      if(cb.checked)
+      {
+        myLocations.push(cb.value);
+      }
+      else
+      {
+        var i = myLocations.indexOf(cb.value);
+        if(i > -1)
+        {
+          myLocations.splice(i, 1);
+        }
+      }
+
+      console.log(myLocations);
     }
 
-
+    function ShowOtherPlaces ()
+    {
+        var checkbox = "WayPoints:<br>";
+        for (var op in possiblePlaces)
+        {
+          if ((possiblePlaces[op] != dest) && (possiblePlaces[op] != origem)&&(possiblePlaces[op] != ""))
+          {
+            checkbox += "<input type='checkbox' onchange='UpdateWayPointsList(this);' value='"+possiblePlaces[op]+"'>"+possiblePlaces[op]+"<br>";
+          }
+        }
+        document.getElementById("WayPointSelection").innerHTML = checkbox;
+    }
 
     function getOrigem(dropdown) {
         var myindex  = dropdown.selectedIndex;
@@ -87,6 +134,8 @@
         {
           ShowOtherPlaces();
         }
+        UpdateDropdownLists();
+        console.log("selected origem")
         return true;
     }
 
@@ -101,6 +150,8 @@
           ShowOtherPlaces();
 
         }
+        UpdateDropdownLists();
+        console.log("selected dest")
         return true;
     }
   </script>
@@ -108,31 +159,21 @@
 
 
 <body>
-<button type="button" id="btApend">Apend na lista</button>
 
-<button type="button" id="btSubmit">Submit</button>
-
+Origem:
 <div id="selOrig">
-  <select name=selectOrigem onchange='getOrigem(this);' required>
-    <option id="dropdown0" value="" selected="selected"></option>
-    <option id="dropdown1">Value 1</option>
-    <option id="dropdown2">Value 2</option>
-    <option id="dropdown3">Value 3</option>
-  </select>
 </div> 
 
-<div>
-  <select name=selectDest onchange='getDest(this);' required>
-    <option id="dropdown3.5" value="" selected="selected"></option>
-    <option id="dropdown4">Value 1</option>
-    <option id="dropdown5">Value 2</option>
-    <option id="dropdown6">Value 3</option>
-  </select>
+Destino:
+<div id="selDest">
 </div> 
 
 <div id="WayPointSelection">
-
 </div>
+
+<!-- <button type="button" id="btApend">Apend na lista</button> -->
+
+<button type="button" id="btSubmit" onclick='post();'>Submit</button>
 
 </body>
 
