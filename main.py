@@ -73,7 +73,7 @@ class ListStuff(webapp2.RequestHandler):
     def get(self):
         query = Place.query()
         s = "Name - Latitude - Longitude <br>"
-        for p in query.fetch(10):
+        for p in query.fetch(50):
             s += p.name + " , "
             s += str(p.latitude) + " , "
             s += str(p.longitude) + "<br>"
@@ -107,39 +107,57 @@ class MapHandler(webapp2.RequestHandler):
         self.response.write(cgi.escape(resp))
 
 class Populate(webapp2.RequestHandler):
+    
+    def putPlace(self,lat,lon,name):
+        place = Place()
+        place.latitude = lat
+        place.longitude = lon
+        place.name = name
+        place.put()
+
     def get(self):
-        lat = -23.558745
-        lon = -46.731859
-        name = 'IMEUSP'
-        place = Place()
-        place.latitude = lat
-        place.longitude = lon
-        place.name = name
-        place.put()
-        lat = -23.561518
-        lon = -46.656009
-        name = 'MASP'
-        place = Place()
-        place.latitude = lat
-        place.longitude = lon
-        place.name = name
-        place.put()
-        lat = -23.572742
-        lon = -46.696095
-        name = 'Shopping Eldorado'
-        place = Place()
-        place.latitude = lat
-        place.longitude = lon
-        place.name = name
-        place.put()
-        lat = -23.564588
-        lon = -46.739655
-        name = 'HU'
-        place = Place()
-        place.latitude = lat
-        place.longitude = lon
-        place.name = name
-        place.put()
+        ###############################################################
+        #                           SP                                # 
+        ###############################################################
+
+        #IMEUSP
+        self.putPlace(-23.558745,-46.731859,'IMEUSP')
+        #MASP
+        self.putPlace(-23.561518,-46.656009,'MASP')
+        #Shopping Eldorado
+        self.putPlace(-23.572742,-46.696095,'Shopping Eldorado')
+        #HU
+        self.putPlace(-23.564588,-46.739655,'HU')
+        #Teatro Municipal SP
+        self.putPlace(-23.545166, -46.638218,'Teatro Municipal de Sao Paulo')
+        #Pinacoteca
+        self.putPlace(-23.534208, -46.633228,'Pinacoteca de Sao Paulo')
+        #Ibirapuera
+        self.putPlace(-23.587426, -46.657205,'Parque do Ibirapuera')
+        #Museu L.P.
+        self.putPlace(-23.535016, -46.634672,'Museu da Lingua Portuguesa')
+        #Jd Botanico SP
+        self.putPlace(-23.641802, -46.620280,'Jardim Botanico de Sao Paulo')
+        #Parque Villa Lobos
+        self.putPlace(-23.547737, -46.723836,'Parque Villa Lobos')
+        #Museu Paulista
+        self.putPlace(-23.585440, -46.608956,'Museu Paulista')
+        #Catedral da Se
+        self.putPlace(-23.551339, -46.633914,'Catedral da Se')
+
+        ###############################################################
+        #                           RIO                               # 
+        ###############################################################
+        #Pao de acucar
+        self.putPlace(-22.948721, -43.155117,'Pao de Acucar')
+        #Teatro Municipal Rio
+        self.putPlace(-22.908979, -43.175882,'Teatro Municipal do Rio')
+        #Cristo
+        self.putPlace(-22.951304, -43.210759,'Cristo Redentor')
+        #Maracana
+        self.putPlace(-22.912168, -43.229856,'Maracana')
+        #Ipanema
+        self.putPlace(-22.986575, -43.202208,'Praia de Ipanema')
         self.response.write("Ok")
 
 
