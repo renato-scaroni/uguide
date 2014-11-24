@@ -7,6 +7,7 @@
 <title>GMaps.js &mdash; Tests</title>
 <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="style2.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" src="https://rawgit.com/HPNeo/gmaps/master/gmaps.js"></script>
@@ -85,6 +86,8 @@
 </br>
 </br>
 </br>
+<div class="col-md-4"></div>
+<div class="col-md-4"><h1> Voce vai visitar:</h1></div>
 </br>
 </br>
 </br>
@@ -96,35 +99,43 @@
 
 <form role="form">
 <div class="row">
-   <div class="col-md-2"></div>
-    <div class="col-md-1"></div>
-  <div class="col-md-4">
+  <div class="col-md-4"></div>
+  
+  <div class="col-md-2">
     Origem
-  </br>
+    </br>
     <div class="btn-group">
-    <button type="button" class="btn btn-danger">Inicio</button>
-    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-    <span class="caret"></span>
-    <span class="sr-only">Toggle Dropdown</span>
-    </button>
-  <ul class="dropdown-menu" role="menu">
-      <li><a href="#">Action</a></li>
-      <li><a href="#">Another action</a></li>
-      <li><a href="#">Something else here</a></li>
-      <li class="divider"></li>
-      <li><a href="#">Separated link</a></li>
-    </ul>
-   </div>
- </div>
-  <div class="col-md-4">
+      <button type="button" class="btn btn-success">Inicio</button>
+      <button type="button" class="btn btn-success dropdown-success" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="col-md-2">
     Destino
-  </br>
+    </br>
     <div class="btn-group">
       <button type="button" class="btn btn-danger">Destino</button>
       <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-      <span class="caret"></span>
-      <span class="sr-only">Toggle Dropdown</span>
-      </button>
+        <span class="caret"></span>
+       <span class="sr-only">Toggle Dropdown</span>
+     </button>
+     <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Separated link</a></li>
+      </ul>
     </div>
   </div>
   
@@ -155,10 +166,10 @@
 
 </div>
 <div class="row">
-  <div class="col-md-2"></div>
-   <div class="col-md-1"></div>
+  <div class="col-md-4"></div>
+  
 
-  <div class="col-md-4">
+  <div class="col-md-2">
 <input type="checkbox" name="causelist_month" id="causelist_month" value="select all/unselect all" onclick="checkedAll     ();"> select all/unselect all
 </div>
 
@@ -171,9 +182,9 @@
 
 
 <div class="row">
-    <div class="col-md-2"></div>
-     <div class="col-md-1"></div>
-  <div class="col-md-4">
+    <div class="col-md-4"></div>
+    
+  <div class="col-md-2">
   <input type="checkbox" name="viju" id ="viju" value="feb" onClick=""> feb
  </div>
 
@@ -184,9 +195,9 @@
 </div>
 
 <div class="row"> 
-    <div class="col-md-2"></div>
-     <div class="col-md-1"></div>
-  <div class="col-md-4">
+    <div class="col-md-4"></div>
+   
+  <div class="col-md-2">
  <input type="checkbox" name="viju" id ="viju" value="feb" onClick=""> mar
 </div>
 
@@ -200,7 +211,7 @@
 </div>
 <div class="row"> 
      <div class="col-md-1"></div>
-    <div class="col-md-8"></div>
+    <div class="col-md-6"></div>
 <button type="submit" class="btn btn-primary">Submit</button>
 </div>
 
