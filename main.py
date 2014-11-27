@@ -34,48 +34,66 @@ class Place(ndb.Model):
     latitude = ndb.FloatProperty()
     longitude = ndb.FloatProperty()
     name = ndb.StringProperty()
+    city = ndb.StringProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
 
+class IndexHandler(webapp2.RequestHandler):
+    def get(self):
+        template_values = {
+            "l" : cities,
+        }
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
+
+cities = {"Sao Paulo":"sampa", "Rio de Janeiro":"rio"}
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         query = Place.query()
-        q = query.fetch(10)
-        places = []
-        s = ""
-        for p in q:
-            places.append(p.name)
-            s += p.name + " , "
-            s += str(p.latitude) + " , "
-            s += str(p.longitude) + "<br>"
+        c = self.request.get("city")
+        citiesList = []
+        for city in cities.iteritems():
+            citiesList.append(city[1])
+        if c in citiesList:        
+            q = query.filter(Place.city == c)
+            places = []
+            s = ""
+            for p in q:
+                places.append(p.name)
+                s += p.name + " , "
+                s += str(p.latitude) + " , "
+                s += str(p.longitude) + "<br>"
 
-        template_values = {
-            'places' : places,
-            'placesString' : s
-        }
-
-        template = JINJA_ENVIRONMENT.get_template('mainPage.html')
-        self.response.write(template.render(template_values))
+            template_values = {
+                'places' : places,
+                'placesString' : s
+            }
+            template = JINJA_ENVIRONMENT.get_template('mainPage.html')
+            self.response.write(template.render(template_values))
+        else:
+            self.redirect("/error?type=400")
 
 class RegisterStuff(webapp2.RequestHandler):
     def get(self):
         lat = self.request.get("lat")
         lon = self.request.get("lon")
         name = self.request.get("name")
+        city = self.request.get("city")
         place = Place()
         place.latitude = lat
         place.longitude = lon
         place.name = name
+        place.city = city
         place.put()
-        self.response.write("Regitered "+ name + " at longitude:"+lon+" and latitude:"+lat)
+        self.response.write("Regitered: "+ name + " City: "+ city +" at longitude:"+lon+" and latitude:"+lat)
 
 class ListStuff(webapp2.RequestHandler):
     def get(self):
         query = Place.query()
         s = "Name - Latitude - Longitude <br>"
-        for p in query.fetch(10):
+        for p in query.fetch():
             s += p.name + " , "
             s += str(p.latitude) + " , "
-            s += str(p.longitude) + "<br>"
+            s += str(p.longitude) + "</br>"
         self.response.write(s)
 
 
@@ -119,53 +137,54 @@ class MapHandler(webapp2.RequestHandler):
 
 
 class Populate(webapp2.RequestHandler):
-    def putPlace(self,lat,lon,name):
+    def putPlace(self,lat,lon,name,city):
         place = Place()
         place.latitude = lat
         place.longitude = lon
         place.name = name
+        place.city = city
         place.put()
     def get(self):
         ###############################################################
         # SP #
         ###############################################################
         #IMEUSP
-        self.putPlace(-23.558745,-46.731859,'IMEUSP')
+        self.putPlace(-23.558745,-46.731859,'IMEUSP','sampa')
         #MASP
-        self.putPlace(-23.561518,-46.656009,'MASP')
+        self.putPlace(-23.561518,-46.656009,'MASP','sampa' )
         #Shopping Eldorado
-        self.putPlace(-23.572742,-46.696095,'Shopping Eldorado')
+        self.putPlace(-23.572742,-46.696095,'Shopping Eldorado','sampa')
         #HU
-        self.putPlace(-23.564588,-46.739655,'HU')
+        self.putPlace(-23.564588,-46.739655,'HU','sampa')
         #Teatro Municipal SP
-        self.putPlace(-23.545166, -46.638218,'Teatro Municipal de Sao Paulo')
+        self.putPlace(-23.545166, -46.638218,'Teatro Municipal de Sao Paulo','sampa')
         #Pinacoteca
-        self.putPlace(-23.534208, -46.633228,'Pinacoteca de Sao Paulo')
+        self.putPlace(-23.534208, -46.633228,'Pinacoteca de Sao Paulo','sampa')
         #Ibirapuera
-        self.putPlace(-23.587426, -46.657205,'Parque do Ibirapuera')
+        self.putPlace(-23.587426, -46.657205,'Parque do Ibirapuera','sampa')
         #Museu L.P.
-        self.putPlace(-23.535016, -46.634672,'Museu da Lingua Portuguesa')
+        self.putPlace(-23.535016, -46.634672,'Museu da Lingua Portuguesa','sampa')
         #Jd Botanico SP
-        self.putPlace(-23.641802, -46.620280,'Jardim Botanico de Sao Paulo')
+        self.putPlace(-23.641802, -46.620280,'Jardim Botanico de Sao Paulo','sampa')
         #Parque Villa Lobos
-        self.putPlace(-23.547737, -46.723836,'Parque Villa Lobos')
+        self.putPlace(-23.547737, -46.723836,'Parque Villa Lobos','sampa')
         #Museu Paulista
-        self.putPlace(-23.585440, -46.608956,'Museu Paulista')
+        self.putPlace(-23.585440, -46.608956,'Museu Paulista','sampa')
         #Catedral da Se
-        self.putPlace(-23.551339, -46.633914,'Catedral da Se')
+        self.putPlace(-23.551339, -46.633914,'Catedral da Se','sampa')
         ###############################################################
         # RIO #
         ###############################################################
         #Pao de acucar
-        self.putPlace(-22.948721, -43.155117,'Pao de Acucar')
+        self.putPlace(-22.948721, -43.155117,'Pao de Acucar','rio')
         #Teatro Municipal Rio
-        self.putPlace(-22.908979, -43.175882,'Teatro Municipal do Rio')
+        self.putPlace(-22.908979, -43.175882,'Teatro Municipal do Rio','rio')
         #Cristo
-        self.putPlace(-22.951304, -43.210759,'Cristo Redentor')
+        self.putPlace(-22.951304, -43.210759,'Cristo Redentor','rio')
         #Maracana
-        self.putPlace(-22.912168, -43.229856,'Maracana')
+        self.putPlace(-22.912168, -43.229856,'Maracana','rio')
         #Ipanema
-        self.putPlace(-22.986575, -43.202208,'Praia de Ipanema')
+        self.putPlace(-22.986575, -43.202208,'Praia de Ipanema','rio')
         self.response.write("Ok")
 
 app = webapp2.WSGIApplication([
