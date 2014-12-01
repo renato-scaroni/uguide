@@ -25,6 +25,7 @@ from google.appengine.ext import ndb
 
 import jinja2
 
+import math
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -38,10 +39,88 @@ class Place(ndb.Model):
     date = ndb.DateTimeProperty(auto_now_add=True)
 
 class MainHandler(webapp2.RequestHandler):
+
+    def defineWaypoints(self) :
+        self.waypoints = [
+            (-23.557265, -46.660883, 'Estacao Consolacao'),
+            (-23.572742, -46.696095, 'Shopping Eldorado'), 
+            (-23.564588, -46.739655, 'HU'), 
+            (-23.567349, -46.692782, 'Estacao Faria Lima'), 
+            (-23.571875, -46.707365, 'Estacao Butanta')
+            ]
+
+
+    def rad(self, x):
+        return x*math.pi/(180)
+
+    def distancia(self, p1, p2):
+        R = 6378137
+        dLat = self.rad(p2[0] - p1[0])
+        dLong = self.rad(p2[1] - p1[1])
+        a = math.sin(dLat/2)*math.sin(dLat/2) + math.cos(self.rad(p1[0])) * math.cos(self.rad(p2[0])) * math.sin(dLong / 2) * math.sin(dLong / 2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        d = R * c;
+        return d 
+    
+    def ordenaWaypoints(self, origem):
+        size = len(self.waypoints)
+        print('size = ' + str(size))
+        
+        distMin = float('Inf')
+        index = -1
+        for k in range(0,size):
+            
+            dist = self.distancia(origem,self.waypoints[k])
+
+            #print('K = '+str(k))
+            #print('nome = '+self.waypoints[k][2])
+            #print('distMin = '+str(distMin))
+            #print('dist k = '+str(dist))
+            
+            if (dist < distMin):
+                
+                print(str(self.waypoints[k]))
+                index = k
+                distMin = dist
+
+        self.waypoints[0], self.waypoints[index] = self.waypoints[index], self.waypoints[0] 
+
+        #print("depois do primeiro ficou assim:")
+        #for w in self.waypoints:
+        #    print(str(w[2]))
+        #print('-------------------------------')
+
+
+        for i in range (0,size-1):
+            #print("i = "+str(i))
+            distMin = float('Inf')
+            index = -1
+            for j in range (i+1, size):
+
+                dist = self.distancia(self.waypoints[i], self.waypoints[j])
+
+                if (dist < distMin):
+                    index = j
+                    distMin = dist
+
+            self.waypoints[i+1], self.waypoints[index] = self.waypoints[index], self.waypoints[i+1]
+
+        #print('Depois de tudo ficou assim:')
+        #for w in self.waypoints:
+            #print(w[2])
+
+
     def get(self):
+
+        self.defineWaypoints()
+        self.ordenaWaypoints((-23.558745, -46.731859, 'IMEUSP'))
+
+        #for w in self.waypoints:
+         #   print(w[2])
+
         template_values = {
             'orig' : (-23.558745, -46.731859, 'IMEUSP') ,
-            'waypts' : [(-23.572742, -46.696095, 'Shopping Eldorado'), (-23.564588, -46.739655, 'HU')],
+            'waypts' : self.waypoints,
             'dest' : (-23.561518, -46.656009, 'MASP')
         }
 

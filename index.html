@@ -9,9 +9,10 @@
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" src="https://rawgit.com/HPNeo/gmaps/master/gmaps.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />-->
-<link rel="stylesheet" type="text/css" href="https://linux.ime.usp.br/~scaroni/gmaps/example.css" />
-
+<!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://linux.ime.usp.br/~scaroni/gmaps/example.css" />-->
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/hpneo/gmaps/master/examples/examples.css"/>
+<!--<link rel="stylesheet" type="text/css" href="https://linux.ime.usp.br/~scaroni/gmaps/css/maps.css" />-->
 
 <script type="text/javascript">
     var map;
@@ -94,12 +95,13 @@
         title: '{{orig[2]}}'
       });
 
-      
+      var i = 0;
       {% for way in waypts %}
         waypoints.push({
           location:  new google.maps.LatLng({{way[0]}}, {{way[1]}}),
           stopover:true
         });
+        console.log('{{way[2]}}')
         map.addMarker({
           lat: {{way[0]}},
           lng: {{way[1]}},
@@ -117,6 +119,8 @@
 
     function DrawMap () {
       GenerateMarkers();
+
+      console.log(waypoints);
 
       map.drawRoute({
         origin: [{{orig[0]}}, {{orig[1]}}],
