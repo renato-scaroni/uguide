@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+<meta charset="utf-8">
+<title>Uguide &mdash; Uguide</title>
+<!-- Bootstrap -->
+    <link href="https://linux.ime.usp.br/~scaroni/gmaps/css/bootstrap.min.css" rel="stylesheet">
+        <link href="http://www.linux.ime.usp.br/~andreky/style.css" rel="stylesheet">
+   <!--   <link href="style.css" rel="stylesheet"> -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="https://rawgit.com/HPNeo/gmaps/master/gmaps.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />-->
+<link rel="stylesheet" type="text/css" href="https://linux.ime.usp.br/~scaroni/gmaps/example.css" />
+
+
+<script type="text/javascript">
+    var places = [];
+    var identifiers = [];
+    var selectedAPlace = false;
+    var place;
+
+    $(document).ready(function(){
+      {% for p in l %}
+       places.push("{{p[0]}}");
+       identifiers.push("{{p[1]}}")
+      {% endfor %}
+      // console.log(places);
+      // console.log(identifiers);
+      UpdateDropdownLists();      
+    });
+
+
+    function UpdateDropdownLists()
+    {
+      var placeDorpdown = "";
+      var selectedPlace = "Seleciona a Cidade";
+      for (var op in places)
+      {
+        if(identifiers[op] == place)
+        {
+          selectedPlace = places[op];
+        }
+        else
+        {
+          placeDorpdown = placeDorpdown + "<li><a href='#?" + identifiers[op] + "' onclick='getPlace(this)' >" + places[op] + "</a></li>";
+        }
+      }
+      placeDorpdown = placeDorpdown +  "</select>";
+      // console.log(dropdown);
+      var origBtn = "<button type='button' class='btn btn-success'>"+ selectedPlace +"</button>" +
+      "<button type='button' class='btn btn-success dropdown-success' data-toggle='dropdown' aria-expanded='false'> " + 
+        "<span class='caret'></span> " + 
+        "<span class='sr-only'>Toggle Dropdown</span> " + 
+      "</button> " + 
+      "<ul class='dropdown-menu' role='menu' id='items'> " + 
+      "</ul>"
+
+      document.getElementById("drop").innerHTML = origBtn;
+      document.getElementById("items").innerHTML = placeDorpdown;
+    }
+
+    function getPlace(dropdown) {
+        var list = dropdown.href.split('?');
+        var selValue = list[list.length - 1];
+
+        place = selValue;
+        UpdateDropdownLists();
+        console.log("selected dest" + selValue)
+
+        selectedAPlace = true;
+
+        return true;
+    }
+
+    function submit() 
+    {
+      if(!selectedAPlace)
+        return;
+      method = "get";
+      path = "/place?city=" + place;
+      var form = document.createElement("form");
+      form.setAttribute("method", method);
+      form.setAttribute("action", path);
+
+      window.location = path;
+      // form.submit();
+
+    }
+
+  </script>
+</head>
+
+
+<body>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-6"><h1> Seje bem vindo ao Uguide</h1> </div>
+  </br>
+  <div class="col-md-4"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-6"><h4> Quem tem o app vai a Roma! :)</h4> </div>
+</div>
+</br>
+</br>
+</br>
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-6"><h4> Este app tem como o intuito de ajudar os viajantes a planejarem melhor a sua rota de viajem e apreciar a sua experiencia com a cidade. Selecionando a cidade a ser visitada e o pontos turisticos criamos uma rota na qual o viajante passe menos tempo possivel no deslocamento entre as atracoes. Sendo assim aproveitando mais o que a cidade tem a oferecer. </h4> </div>
+</div>
+</br>
+</div>
+<div class "row">
+  <div class="col-md-4"></div>
+  <div class="col-md-1"></div>
+  <div class="col-md-4"> 
+    </br>
+    <div class="btn-group" id="drop">
+      <button type="button" class="btn btn-warning">Seleciona a Cidade</button>
+      <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu" role="menu" id="items">
+        <li><a href="#">Sao Paulo</a></li>
+        <li><a href="#">Rio</a></li>
+      </ul>
+    </div>
+   </div>
+ </div>
+</br>
+</br>
+</br>
+</br>
+<div class="row"> 
+     <div class="col-md-4"></div>
+     <div class="col-md-1"></div>
+    <div class="col-md-2"><button type="submit" class="btn btn-primary" onclick="submit()">Enviar</button></div>
+</div>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+</body>
+
+</html>
+{% endautoescape %}
