@@ -24,6 +24,8 @@ from google.appengine.ext import ndb
 
 import jinja2
 
+import math
+
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -111,6 +113,73 @@ class ErrorHandler(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 class MapHandler(webapp2.RequestHandler):
+
+    def rad(self, x):
+        return x*math.pi/(180)
+
+    def distancia(self, p1, p2):
+        R = 6378137
+        dLat = self.rad(p2[0] - p1[0])
+        dLong = self.rad(p2[1] - p1[1])
+        a = math.sin(dLat/2)*math.sin(dLat/2) + math.cos(self.rad(p1[0])) * math.cos(self.rad(p2[0])) * math.sin(dLong / 2) * math.sin(dLong / 2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        d = R * c;
+        return d 
+
+    def ordenaWaypoints(self, listaPontos, origem):
+        #size = len(self.waypoints)
+        size = len(listaPontos)
+        print('size = ' + str(size))
+        
+        distMin = float('Inf')
+        index = -1
+        for k in range(0,size):
+            
+            #dist = self.distancia(origem,self.waypoints[k])
+
+            dist = self.distancia(origem,listaPontos[k])
+
+            #print('K = '+str(k))
+            #print('nome = '+self.waypoints[k][2])
+            #print('distMin = '+str(distMin))
+            #print('dist k = '+str(dist))
+            
+            if (dist < distMin):
+                
+                print(str(listaPontos[k]))
+                index = k
+                distMin = dist
+
+        listaPontos[0], listaPontos[index] = listaPontos[index], listaPontos[0]
+
+
+        #print("depois do primeiro ficou assim:")
+        #for w in self.waypoints:
+        #    print(str(w[2]))
+        #print('-------------------------------')
+
+
+        for i in range (0,size-1):
+            #print("i = "+str(i))
+            distMin = float('Inf')
+            index = -1
+            for j in range (i+1, size):
+
+                dist = self.distancia(listaPontos[i], listaPontos[j])
+
+                if (dist < distMin):
+                    index = j
+                    distMin = dist
+
+            listaPontos[i+1], listaPontos[index] = listaPontos[index], listaPontos[i+1]
+
+        #print('Depois de tudo ficou assim:')
+        #for w in self.waypoints:
+            #print(w[2])
+
+        #self.waypoints = listaPontos
+        return listaPontos
+
     def getPlaces(self, l):
         places = []
         q = Place.query()
@@ -131,6 +200,7 @@ class MapHandler(webapp2.RequestHandler):
             for i in range(1, len(places)-1):
                 waypts.append(places[i])
 
+            waypts = self.ordenaWaypoints(waypts,places[0])
             template_values = {
                 'orig' : places[0],
                 'waypts' : waypts,
