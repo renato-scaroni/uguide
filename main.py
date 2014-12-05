@@ -41,18 +41,24 @@ class Place(ndb.Model):
 
 class IndexHandler(webapp2.RequestHandler):
     def get(self):
+        myLocations = Location()
+        cities = myLocations.cities
         template_values = {
             "l" : cities,
         }
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
-cities = [("Sao Paulo","sampa"), ("Rio de Janeiro","rio")]
+class Location:
+    cities = [("Sao Paulo","sampa"), ("Rio de Janeiro","rio")]
+
 class PlaceSelectionHandler(webapp2.RequestHandler):
     def get(self):
         query = Place.query()
         c = self.request.get("city")
         citiesList = []
+        myLocations = Location()
+        cities = myLocations.cities
         for city in cities:
             citiesList.append(city[1])
         if c == "":
@@ -200,7 +206,8 @@ class MapHandler(webapp2.RequestHandler):
             for i in range(1, len(places)-1):
                 waypts.append(places[i])
 
-            waypts = self.ordenaWaypoints(waypts,places[0])
+            if len(waypts) > 0:
+                waypts = self.ordenaWaypoints(waypts,places[0])
             template_values = {
                 'orig' : places[0],
                 'waypts' : waypts,
