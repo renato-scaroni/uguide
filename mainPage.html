@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>GMaps.js &mdash; Tests</title>
+<title>Uguide &mdash; Lugares</title>
 <link href="https://linux.ime.usp.br/~scaroni/gmaps/css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" href="http://www.linux.ime.usp.br/~andreky/style2.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -99,7 +99,7 @@
       form.setAttribute("action", path);
 
       var hiddenField = document.createElement("input");
-      form.style.display = "hidden";
+      hiddenField.setAttribute("type", "hidden");
       // hiddenField.setAttribute("type", "hidden");
       hiddenField.setAttribute("name", "locations");
       var strLocations = origem + "\t";
@@ -200,7 +200,7 @@
 </br>
 </br>
 <div class="col-md-4"></div>
-<div class="col-md-4"><h1> Voce vai visitar:</h1></div>
+<div class="col-md-4"><h1> O que pretende visitar hoje?</h1></div>
 </br>
 </br>
 </br>
