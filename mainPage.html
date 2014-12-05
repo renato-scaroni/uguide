@@ -37,7 +37,7 @@
           }
           else
           {
-            origDropdown = origDropdown +  "<li><a href='#?" + possiblePlaces[op] + "' onclick='getOrig(this)' >" + possiblePlaces[op] + "</a></li>";
+            origDropdown = origDropdown +  "<li><a href='javascript: getOrig(\"" + possiblePlaces[op] + "\")' >" + possiblePlaces[op] + "</a></li>";
           }          
         }
         if (possiblePlaces[op] != origem)
@@ -48,7 +48,7 @@
           }
           else
           {
-            destDropdown = destDropdown + "<li><a href='#?" + possiblePlaces[op] + "' onclick='getDest(this)' >" + possiblePlaces[op] + "</a></li>";
+            destDropdown = destDropdown + "<li><a href='javascript: getDest(\"" + possiblePlaces[op] + "\")' >" + possiblePlaces[op] + "</a></li>";
           }
         }
       }
@@ -88,9 +88,10 @@
 
     function post() 
     {
+      // window.location.replace("/map");
       if(!origSelected && !destSelected)
         return;
-      var method = "post";
+      var method = "POST";
       var path = "/map";
 
       var form = document.createElement("form");
@@ -98,7 +99,8 @@
       form.setAttribute("action", path);
 
       var hiddenField = document.createElement("input");
-      hiddenField.setAttribute("type", "hidden");
+      form.style.display = "hidden";
+      // hiddenField.setAttribute("type", "hidden");
       hiddenField.setAttribute("name", "locations");
       var strLocations = origem + "\t";
       for (var key in myLocations) {
@@ -159,8 +161,8 @@
     }
 
     function getOrig(dropdown) {
-        var list = dropdown.href.split('?');
-        var selValue = list[list.length - 1];
+        // var list = dropdown.href.split('?');
+        var selValue = dropdown;//list[list.length - 1];
 
         origem = selValue;
         origSelected = true;
@@ -170,12 +172,11 @@
         }
         UpdateDropdownLists();
         console.log("selected dest" + selValue)
-        return true;
     }
 
     function getDest(dropdown) {
-        var list = dropdown.href.split('?');
-        var selValue = list[list.length - 1];
+        // var list = dropdown.href.split('?');
+        var selValue = dropdown;//list[list.length - 1];
 
         dest = selValue;
         destSelected = true;
@@ -185,12 +186,8 @@
         }
         UpdateDropdownLists();
         console.log("selected dest" + selValue)
-        return true;
     }
 
-    function testCb (arg) {
-      console.log(arg.value);
-    }
   </script>
 </head>
 
@@ -246,9 +243,9 @@
 </br>
 </br>
 <div class="row"> 
-     <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
     <div class="col-md-6"></div>
-<button type="submit" class="btn btn-primary" onclick='post()'>Submit</button>
+    <button type="button" class="btn btn-primary" onclick='post();'>Submit</button>
 </div>
 
 </div>
