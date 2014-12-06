@@ -3,7 +3,7 @@ application: uguidemapsapp
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: yes
+threadsafe: no
 
 handlers:
 - url: /favicon\.ico
@@ -13,9 +13,11 @@ handlers:
 - url: .*
   script: main.app
 
+- url: /test.*
+  script: gaeunit.py
+
 libraries:
 - name: webapp2
   version: "2.5.2"
 - name: jinja2
   version: latest
-

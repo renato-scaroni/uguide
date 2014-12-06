@@ -26,6 +26,7 @@ import jinja2
 
 import math
 
+import urllib2
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -268,6 +269,55 @@ class Populate(webapp2.RequestHandler):
         self.putPlace(-22.986575, -43.202208,'Praia de Ipanema','rio')
         self.response.write("Ok")
 
+class Singleton(object):
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(Singleton, cls).__new__(
+                                cls, *args, **kwargs)
+        return cls._instance
+
+class Test(Singleton):
+    getDomainForm = "<!DOCTYPE html> <html> <body> <form action='/test' method='post'> Domain:<br> <input type='text' name='domain'> <br><br> <input type='submit' value='Submit'></form></body> </html>"
+    domain = ""
+    def SetDomain(self, dom):
+        self.domain = dom
+    def GetDomain(self):
+        return self.domain
+    def GetDomainForm(self):
+        return self.getDomainForm
+
+class TestMainHandler(webapp2.RequestHandler):
+    def get(self):
+        if Test().GetDomain() == "":
+            self.response.write(Test().GetDomainForm())
+        else:
+            tests = UnitTests()
+
+            s = "Should break /map : " + tests.ShouldReturnError_MAP() + "<br>"
+            s += "Should access main page : " + tests.ShouldAccessMainPage()
+            self.response.write(s)
+
+    def post(self):
+        domain = self.request.get("domain")
+        Test().SetDomain(domain)
+        self.redirect("/test")
+
+class UnitTests():
+    def ShouldReturnError_MAP(self):
+        try:
+            r = urllib2.urlopen(Test().GetDomain()+"/map")
+            return "Not OK";
+        except urllib2.HTTPError as e:
+            return "OK"
+
+    def ShouldAccessMainPage(self):
+        try:
+            r = urllib2.urlopen(Test().GetDomain())
+            return "OK";
+        except urllib2.HTTPError as e:
+            return "Not OK - error " + str(e.code)
+
 app = webapp2.WSGIApplication([
     ('/', IndexHandler),
     ('/place', PlaceSelectionHandler),
@@ -275,5 +325,6 @@ app = webapp2.WSGIApplication([
     ('/register', RegisterStuff),
     ('/list', ListStuff),
     ('/populate', Populate),
-    ('/error', ErrorHandler)
+    ('/error', ErrorHandler),
+    ('/test', TestMainHandler)
 ], debug=True)
