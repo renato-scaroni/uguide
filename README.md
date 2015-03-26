@@ -4,6 +4,10 @@ Projeto desenvolvido como parte da avaliação no curso de Engenharia de Softwar
 do segundo semestre de 2014 no curso de ciência da computação do IME-USP
 
 - Desenvolvido por:
-André Kenji Yai
-Rafael Gregorut Mota
-Renato Scaroni
+André Kenji Yai <br>
+Rafael Gregorut Mota <br>
+Renato Scaroni 
+<br>
+<br>
+<br>
+protótipo acessível em: uguidemapsapp.appspot.com/
