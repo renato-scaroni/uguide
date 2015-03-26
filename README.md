@@ -3,7 +3,7 @@ Uguide - Aplicativo web simples que dá o menor trajeto entre uma lista de ponto
 Projeto desenvolvido como parte da avaliação no curso de Engenharia de Software
 do segundo semestre de 2014 no curso de ciência da computação do IME-USP
 
-- Desenvolvido por:
+- Desenvolvido por:<br>
 André Kenji Yai <br>
 Rafael Gregorut Mota <br>
 Renato Scaroni 
